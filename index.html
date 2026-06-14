@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Pit-Patch · Spring 2015 Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+
+    <!-- ===================== LOADER ===================== -->
+    <section id="screen-loader" class="screen screen--loader is-active" aria-label="Loading">
+      <div class="loader">
+        <div class="loader__ring">
+          <svg class="stitch-ring" viewBox="0 0 240 240" aria-hidden="true">
+            <circle cx="120" cy="120" r="94"></circle>
+          </svg>
+          <svg class="loader__needle" viewBox="0 0 1200 1200" aria-hidden="true">
+            <path fill-rule="evenodd" d="m730.92 61.379c47.316 27.312-94.738 273.35-269.7 576.41-142.26 246.39-294.04 437.04-345.82 499.71-1.5859 1.8828-4.2969 2.3516-6.4336 1.1172-2.125-1.2227-3.0703-3.8047-2.2422-6.1328 28.379-76.176 117.61-302.94 259.86-549.34 174.97-303.05 317.03-549.09 364.33-521.77zm-41.293 71.52c10.871 6.2891-4.7891 53.797-34.945 106.03-30.168 52.234-63.48 89.555-74.352 83.281-10.871-6.2773 4.7891-53.785 34.945-106.03 30.168-52.234 63.48-89.555 74.352-83.281z"/>
+            <path fill-rule="evenodd" d="m575.17 220.67c-16.414-7.6211-32.578-15.996-49.055-24.023-35.941-17.473-72.121-35.305-111.35-43.68-16.848-3.6016-34.199-4.3086-51.422-1.5703-33.289 5.2812-64.969 20.953-89.914 43.043-1.5469 1.3672-3.0859 2.7461-4.5117 4.2227 0 0-1.5977 1.5234-2.832 2.3281-6.1211 3.9727-14.867 3.2266-20.219-1.9688-5.293-5.125-6.3945-13.859-2.5781-20.148 2.1133-3.4805 5.4375-6.0859 8.543-8.832 34.738-30.758 79.871-50.508 126.25-52.922 2.6523-0.13281 5.3047-0.20313 7.9688-0.19141 33.336 0.22656 65.461 11.23 96.215 23.879 37.691 15.492 73.691 35.449 110.62 52.008-4.0078 5.7461-8.1953 12.121-12.371 18.91-1.8594 3.0234-3.6484 6.0117-5.3398 8.9414z"/>
+            <path fill-rule="evenodd" d="m625.99 206.14c5.4375 1.8594 26.688 7.8594 31.812 9.1094 48.816 11.891 99.742 13.934 150.43 6.3359 56.004-8.3984 111.06-27.707 167.66-23.293 24 1.8711 47.652 7.5352 69.516 18 32.375 15.504 54.672 47.746 68.102 80.039 16.477 39.602 23.062 82.871 24.504 126 3.2148 95.652-18.863 191.79-58.309 279.8-43.234 96.492-109.11 182.81-191.59 248.38-5.6875 4.5234-11.461 8.9414-17.305 13.273-38.605 28.621-84.109 49.211-132.7 52.066-51.457 3.0117-103.67-13.402-147.07-40.883-29.328-18.562-55.379-44.148-68.629-77.148-12.758-31.766-12.07-68.016-3.6953-101.45 5.1484-20.605 11.965-40.801 20.387-60.348 15.719-36.48 38.398-70.621 69.648-95.578 20.902-16.691 45.191-28.738 70.297-38.352 28.691-10.992 59.914-17.867 83.629-39.133 14.34-12.852 23.914-30.312 31.824-47.93l1.8594-3.1328c0.83984-0.88672 1.5859-1.8711 2.5078-2.6523 5.5781-4.6914 14.352-5.0273 20.305-0.52734 4.9062 3.6953 7.3555 10.234 6.1562 16.199-0.71875 3.625-2.6172 6.8398-4.2109 10.188-10.465 21.926-24 42.672-43.32 57.637-29.902 23.16-68.734 31.332-102.61 46.078-28.68 12.48-54.852 30.91-74.484 55.715-23.137 29.23-37.656 64.586-47.914 100.62-7.6094 26.746-11.195 55.367-3.1211 82.02 10.152 33.551 39.156 59.543 69.098 76.402 47.508 26.734 103.69 38.293 157.5 22.883 34.199-9.8047 64.355-29.664 93.266-52.812 112.98-90.457 192-221.48 222.73-363.27 12.098-55.801 17.074-113.41 10.871-169.79-3.6836-33.602-11.258-67.297-26.809-96.973-10.727-20.473-25.969-39.602-46.945-48.852-28.754-12.684-61.094-16.5-92.762-13.453-42.348 4.0781-83.629 16.621-125.18 22.715-61.164 8.9766-123.88 4.4766-184.45-13.441 0 0-13.379-4.1523-16.906-5.4375 2.1484-4.4023 4.5-8.9414 7.0195-13.57 2.9648-5.4492 5.9414-10.645 8.8906-15.457z"/>
+          </svg>
+        </div>
+        <p class="loader__wordmark">Pit-Patch</p>
+      </div>
+    </section>
+
+    <!-- ===================== COVER ===================== -->
+    <section id="screen-cover" class="screen screen--cover" aria-label="Spring 2015 Collection">
+      <div class="cover">
+        <img class="cover__mark" src="assets/needle.svg" alt="Pit-Patch" width="44" height="44">
+        <p class="cover__eyebrow">Pit-Patch Spring 2015 Collection</p>
+        <div class="swipe-cue" id="enter-cue">
+          <span class="swipe-cue__track" aria-hidden="true">
+            <span class="swipe-cue__dot"></span>
+          </span>
+          <span class="swipe-cue__label">Swipe to begin</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BROWSER ===================== -->
+    <section id="screen-browser" class="screen screen--browser" aria-label="The collection">
+
+      <!-- disc layers sit BEHIND the burlap frame; only the hole reveals them -->
+      <div class="porthole" id="porthole"></div>
+
+      <!-- the constant burlap material, with a transparent porthole -->
+      <img class="bg-frame" src="assets/frame.png" alt="" aria-hidden="true">
+
+      <!-- UI above everything -->
+      <header class="topbar">
+        <span class="topbar__brand">Pit-Patch</span>
+        <button class="cart-btn" id="cart-btn" type="button" aria-label="Cart">
+          Cart <span class="cart-btn__count" id="cart-count">0</span>
+        </button>
+      </header>
+
+      <button class="nav nav--prev" id="nav-prev" type="button" aria-label="Previous">&#8249;</button>
+      <button class="nav nav--next" id="nav-next" type="button" aria-label="Next">&#8250;</button>
+
+      <div class="info-area" id="info-area">
+        <div class="info" id="info">
+          <h2 class="info__name" id="sw-name"></h2>
+          <button class="add-btn" id="add-btn" type="button">Add to cart</button>
+        </div>
+        <div class="finale" id="finale">
+          <img class="finale__logo" src="assets/ms-logo.svg" alt="Microsoft">
+          <p class="finale__copy">We don&#8217;t want to see you keep sweating. Maybe it&#8217;s time you gave your account executive a call.</p>
+          <button class="finale__cta" type="button">Email now</button>
+        </div>
+      </div>
+
+      <div class="swipe-hint" id="swipe-hint" aria-hidden="true">
+        <span class="swipe-hint__label">Keep swiping</span>
+        <span class="swipe-hint__chevs">&#8250;&#8250;&#8250;</span>
+      </div>
+
+      <div class="counter"><span id="counter-cur">01</span> &thinsp;/&thinsp; <span id="counter-total">11</span></div>
+
+    </section>
+
+    <!-- ===================== CART DRAWER ===================== -->
+    <div class="cart-drawer" id="cart-drawer" aria-hidden="true">
+      <div class="cart-overlay" id="cart-overlay"></div>
+      <aside class="cart-panel" role="dialog" aria-modal="true" aria-label="Your bag">
+        <header class="cart-head">
+          <h2 class="cart-head__title">Your bag</h2>
+          <button class="cart-close" id="cart-close" type="button" aria-label="Close">&times;</button>
+        </header>
+        <div class="cart-list" id="cart-list"></div>
+        <footer class="cart-foot">
+          <div class="cart-foot__row">
+            <span>Total</span>
+            <span id="cart-total-count">0 items</span>
+          </div>
+          <button class="cart-checkout" id="cart-checkout" type="button">Checkout</button>
+        </footer>
+      </aside>
+    </div>
+
+  </main>
+  <div class="touch-cursor" id="touch-cursor" aria-hidden="true"></div>
+  <script src="app.js"></script>
+</body>
+</html>

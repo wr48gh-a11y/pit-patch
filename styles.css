@@ -1,0 +1,729 @@
+/* ============================================================
+   PIT-PATCH — Spring 2015 Collection
+   Editorial fashion grotesque (Archivo). Mobile-first.
+   ============================================================ */
+
+:root {
+  --ink: #1f1d1a;
+  --paper: #efece3;
+  --paper-deep: #e6e1d4;
+  --font: "Archivo", system-ui, -apple-system, sans-serif;
+  --font-narrow: "Archivo Narrow", var(--font);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select: none; }
+
+/* Mobile-first: the app fills the viewport.
+   On desktop it becomes a phone-shaped frame on a gradient (below). */
+#app {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+/* ------------------------------------------------------------
+   Desktop framing — keep the mobile aspect ratio, centre on a
+   gradient (so it doesn't stretch like a responsive site)
+   ------------------------------------------------------------ */
+@media (min-width: 640px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 24px;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #ece5d7 0%, #d8cfbc 52%, #c5bba4 100%);
+  }
+  #app {
+    width: auto;
+    height: min(880px, calc(100svh - 48px));
+    aspect-ratio: 375 / 812;        /* the mobile aspect, locked */
+    border-radius: 44px;
+    box-shadow: 0 40px 90px -12px rgba(21, 23, 29, 0.5);
+  }
+}
+
+/* ------------------------------------------------------------
+   Screen system — each screen stacks, fades in when active
+   ------------------------------------------------------------ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease), visibility 0s linear 0.6s;
+}
+.screen.is-active {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s var(--ease);
+}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+.screen--loader {
+  background: var(--paper);
+}
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+.loader__ring {
+  position: relative;
+  width: 188px;
+  height: 188px;
+  display: grid;
+  place-items: center;
+}
+
+/* Ring of running stitches that march around the mark */
+.stitch-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: ring-spin 9s linear infinite;
+}
+.stitch-ring circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 5;
+  stroke-linecap: round;
+  /* dash = stitch, gap = thread between stitches */
+  stroke-dasharray: 2 18;
+  animation: stitch-march 0.85s linear infinite;
+}
+
+/* The needle-and-thread mark, gently breathing at center */
+.loader__needle {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  fill: var(--ink);
+  animation: needle-breathe 2.1s var(--ease) infinite;
+  transform-origin: center;
+}
+
+.loader__wordmark {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.42em;
+  font-size: 13px;
+  /* optical centering for the tracked caps */
+  padding-left: 0.42em;
+  color: var(--ink);
+  opacity: 0.85;
+  animation: wordmark-pulse 2.1s var(--ease) infinite;
+}
+
+@keyframes stitch-march {
+  to { stroke-dashoffset: -20; }   /* one full dash+gap cycle = seamless loop */
+}
+@keyframes ring-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes needle-breathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50%      { transform: scale(1.06) rotate(-3deg); }
+}
+@keyframes wordmark-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.9; }
+}
+
+/* ============================================================
+   COVER
+   ============================================================ */
+.screen--cover {
+  background: var(--paper);
+}
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 32px;
+  max-width: 460px;
+}
+.cover__mark {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+.cover__eyebrow {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  padding-left: 0.28em;
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 250px;
+  color: #8a8478;
+  margin-bottom: 40px;
+}
+
+/* ============================================================
+   BROWSER — the UGG mechanic
+   Burlap frame stays fixed; the disc inside the hole cross-fades.
+   ============================================================ */
+.screen--browser {
+  display: block;            /* override the flex centering of .screen */
+  background: #c7b59a;       /* burlap-ish, shows in any letterbox gap */
+}
+/* soft scrim over the lower half so name/code/CTA read cleanly on burlap */
+.screen--browser::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 58%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(236, 232, 222, 0) 0%,
+    rgba(236, 232, 222, 0.62) 26%,
+    rgba(236, 232, 222, 0.93) 54%,
+    rgba(236, 232, 222, 0.98) 78%,
+    rgba(236, 232, 222, 1) 100%);
+}
+
+/* constant material */
+.bg-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  /* mute the burlap a touch — calmer, more premium */
+  filter: saturate(0.78) brightness(1.05) contrast(0.96);
+}
+
+/* disc stack — sits behind the frame, revealed only through the hole */
+.porthole {
+  position: absolute;
+  left: 51.5%;
+  top: 31.5%;
+  width: 82%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.porthole .disc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+  will-change: opacity;
+}
+.porthole .disc.is-on { opacity: 1; }
+
+/* top bar */
+.topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(18px + env(safe-area-inset-top)) calc(20px + env(safe-area-inset-right))
+           18px calc(20px + env(safe-area-inset-left));
+}
+.topbar__brand {
+  font-family: var(--font-narrow);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding: 9px 13px 9px calc(13px + 0.2em);
+  font-size: 13px;
+  color: var(--ink);
+  background: rgba(243, 240, 232, 0.86);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(31, 29, 26, 0.12);
+  border-radius: 2px;
+}
+.cart-btn {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  color: var(--ink);
+  background: rgba(243, 240, 232, 0.86);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(31, 29, 26, 0.16);
+  border-radius: 2px;
+  padding: 9px 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  -webkit-tap-highlight-color: transparent;
+}
+.cart-btn__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* prev / next */
+.nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  line-height: 1;
+  padding-bottom: 4px;            /* optical centring of the chevron glyph */
+  /* top is set to the hole centre below */
+  color: var(--ink);
+  background: rgba(243, 240, 232, 0.62);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(31, 29, 26, 0.14);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: opacity 0.25s var(--ease), transform 0.15s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.nav:active { transform: translateY(-50%) scale(0.92); }
+.nav--prev { left: 12px; }
+.nav--next { right: 12px; }
+.nav[disabled] { opacity: 0; pointer-events: none; }
+
+/* name / add  (and the finale message share this slot) */
+.info-area {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 21%;             /* anchor the CTA a constant height above the footer */
+  z-index: 3;
+  padding: 0 24px;
+  transition: opacity 0.15s var(--ease);
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.finale { display: none; }
+.info-area.is-finale { bottom: auto; top: 54%; }   /* logo sits just under the swatch */
+.info-area.is-finale .info { display: none; }
+.info-area.is-finale .finale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.info__name {
+  font-weight: 800;
+  font-size: clamp(28px, 8.5vw, 40px);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+.add-btn {
+  margin-top: 26px;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: none;
+  border-radius: 2px;
+  padding: 15px 30px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.add-btn:active { transform: scale(0.97); }
+.add-btn.is-added { filter: brightness(0.8); }
+
+/* finale: Microsoft sign-off, then message + decorative CTA */
+.finale__copy {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.42;
+  letter-spacing: 0;
+  max-width: 23ch;
+  color: var(--ink);
+  text-wrap: balance;     /* even lines, no widow */
+}
+.finale__cta {
+  margin-top: 22px;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: none;
+  border-radius: 2px;
+  padding: 15px 34px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* counter */
+.counter {
+  position: absolute;
+  bottom: calc(42px + env(safe-area-inset-bottom));
+  left: 0; right: 0;
+  z-index: 3;
+  text-align: center;
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  padding-left: 0.2em;
+  font-size: 12px;
+  color: #5b554a;
+}
+
+/* ============================================================
+   CART DRAWER
+   ============================================================ */
+.cart-drawer {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  visibility: hidden;
+  pointer-events: none;
+}
+.cart-drawer.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+.cart-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 24, 21, 0.42);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+.cart-drawer.is-open .cart-overlay { opacity: 1; }
+
+.cart-panel {
+  position: absolute;
+  top: 0; right: 0;
+  height: 100%;
+  width: min(90%, 420px);
+  background: var(--paper);
+  box-shadow: -18px 0 50px rgba(26, 24, 21, 0.22);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.4s var(--ease);
+}
+.cart-drawer.is-open .cart-panel { transform: translateX(0); }
+
+.cart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 22px 18px;
+  border-bottom: 1px solid #ddd8cc;
+}
+.cart-head__title {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.cart-close {
+  font-family: var(--font);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--ink);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cart-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 22px;
+}
+.cart-empty {
+  padding: 48px 0;
+  text-align: center;
+  font-family: var(--font-narrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  color: #9a9486;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  grid-template-areas:
+    "thumb meta qty"
+    "thumb remove qty";
+  column-gap: 14px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid #e2ddd1;
+}
+.cart-thumb {
+  grid-area: thumb;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #d7d2c5;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+}
+.cart-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cart-meta { grid-area: meta; align-self: end; }
+.cart-meta strong {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+.cart-remove {
+  grid-area: remove;
+  align-self: start;
+  justify-self: start;
+  margin-top: 4px;
+  font-family: var(--font-narrow);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  color: #9a9486;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  -webkit-tap-highlight-color: transparent;
+}
+.cart-remove:active { color: var(--ink); }
+.cart-qty {
+  grid-area: qty;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.cart-qty button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1;
+  color: var(--ink);
+  background: none;
+  border: 1px solid rgba(31,29,26,0.28);
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.cart-qty button:active { background: rgba(31,29,26,0.08); }
+.cart-qty span {
+  min-width: 16px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.cart-foot {
+  padding: 18px 22px calc(22px + env(safe-area-inset-bottom));
+  border-top: 1px solid #ddd8cc;
+}
+.cart-foot__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--font-narrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  color: #5b554a;
+  margin-bottom: 16px;
+}
+.cart-checkout {
+  width: 100%;
+  font-family: var(--font);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--ink);
+  border: none;
+  border-radius: 2px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+  -webkit-tap-highlight-color: transparent;
+}
+.cart-checkout:active { transform: scale(0.99); opacity: 0.92; }
+.cart-checkout[disabled] { opacity: 0.4; cursor: default; }
+
+/* ============================================================
+   TOUCH-CURSOR — simulate a finger on pointer devices
+   ============================================================ */
+body.cursor-sim { cursor: none; }
+body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; }
+.touch-cursor {
+  position: fixed;
+  top: 0; left: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(31, 29, 26, 0.14);
+  border: 1.5px solid rgba(31, 29, 26, 0.4);
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  transform: translate(var(--x, -100px), var(--y, -100px));
+  transition: opacity 0.2s var(--ease), background 0.12s var(--ease), border-color 0.12s var(--ease);
+}
+.touch-cursor.is-visible { opacity: 1; }
+.touch-cursor.is-pressing {
+  transform: translate(var(--x, -100px), var(--y, -100px)) scale(0.66);
+  background: rgba(31, 29, 26, 0.34);
+  border-color: rgba(31, 29, 26, 0.6);
+}
+
+/* ============================================================
+   SWIPE CUE (cover) — slide-to-begin
+   ============================================================ */
+.swipe-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 6px;
+}
+.swipe-cue__track {
+  position: relative;
+  width: 96px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1.5px solid rgba(31, 29, 26, 0.22);
+}
+.swipe-cue__dot {
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translateY(-50%);
+  animation: cue-slide 1.9s var(--ease) infinite;
+}
+.swipe-cue__label {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  padding-left: 0.22em;
+  font-size: 12px;
+  color: #8a8478;
+}
+@keyframes cue-slide {
+  0%, 100% { left: 6px; }
+  50%      { left: calc(100% - 34px); }
+}
+
+/* ============================================================
+   KEEP-SWIPING HINT (browser) — above the counter
+   ============================================================ */
+.swipe-hint {
+  position: absolute;
+  bottom: calc(78px + env(safe-area-inset-bottom));
+  left: 0; right: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  opacity: 0.9;
+  transition: opacity 0.3s var(--ease);
+}
+.swipe-hint.is-hidden { opacity: 0; }
+.swipe-hint__label {
+  font-family: var(--font-narrow);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding-left: 0.2em;
+  font-size: 11px;
+  color: #6a6458;
+}
+.swipe-hint__chevs {
+  font-size: 13px;
+  color: #6a6458;
+  letter-spacing: 1px;
+  animation: chev-nudge 1.5s var(--ease) infinite;
+}
+@keyframes chev-nudge {
+  0%, 100% { transform: translateX(0);   opacity: 0.4; }
+  50%      { transform: translateX(5px); opacity: 1; }
+}
+
+/* ============================================================
+   FINALE — Microsoft sign-off
+   ============================================================ */
+.finale__logo {
+  width: 74px;
+  height: auto;
+  margin-bottom: 22px;     /* first element: sits just under the swatch */
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stitch-ring, .stitch-ring circle, .loader__needle, .loader__wordmark { animation: none; }
+  .cart-overlay, .cart-panel { transition: none; }
+  .swipe-cue__dot, .swipe-hint__chevs { animation: none; }
+}
