@@ -36,9 +36,7 @@
         <img class="cover__mark" src="assets/needle.svg" alt="Pit-Patch" width="44" height="44">
         <p class="cover__eyebrow">Pit-Patch Spring 2015 Collection</p>
         <div class="swipe-cue" id="enter-cue">
-          <span class="swipe-cue__track" aria-hidden="true">
-            <span class="swipe-cue__dot"></span>
-          </span>
+          <img class="swipe-cue__gif" src="assets/swipe.webp" alt="" aria-hidden="true" width="86" height="86">
           <span class="swipe-cue__label">Swipe to begin</span>
         </div>
       </div>
@@ -55,7 +53,7 @@
 
       <!-- UI above everything -->
       <header class="topbar">
-        <span class="topbar__brand">Pit-Patch</span>
+        <button class="topbar__brand" id="instr-open" type="button">Instructions</button>
         <button class="cart-btn" id="cart-btn" type="button" aria-label="Cart">
           Cart <span class="cart-btn__count" id="cart-count">0</span>
         </button>
@@ -84,6 +82,35 @@
       <div class="counter"><span id="counter-cur">01</span> &thinsp;/&thinsp; <span id="counter-total">13</span></div>
 
     </section>
+
+    <!-- ===================== INSTRUCTIONS (how-to reel) ===================== -->
+    <div class="instr" id="instr" aria-hidden="true">
+
+      <div class="porthole" id="instr-porthole"></div>
+      <img class="bg-frame" src="assets/frame.webp" alt="" aria-hidden="true">
+
+      <header class="topbar">
+        <span class="topbar__brand">Instructions</span>
+        <button class="instr__close" id="instr-close" type="button" aria-label="Close">&times;</button>
+      </header>
+
+      <button class="nav nav--prev" id="instr-prev" type="button" aria-label="Previous">&#8249;</button>
+      <button class="nav nav--next" id="instr-next" type="button" aria-label="Next">&#8250;</button>
+
+      <div class="instr__info" id="instr-info">
+        <h2 class="instr__title" id="instr-title"></h2>
+        <p class="instr__body" id="instr-body"></p>
+        <button class="instr__cta" id="instr-cta" type="button">Got it</button>
+      </div>
+
+      <div class="swipe-hint" id="instr-hint" aria-hidden="true">
+        <span class="swipe-hint__label">Keep swiping</span>
+        <span class="swipe-hint__chevs">&#8250;&#8250;&#8250;</span>
+      </div>
+
+      <div class="instr__dots" id="instr-dots" aria-hidden="true"></div>
+
+    </div>
 
     <!-- ===================== CART DRAWER ===================== -->
     <div class="cart-drawer" id="cart-drawer" aria-hidden="true">

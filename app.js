@@ -6,46 +6,28 @@
 /* The collection. Field reference:
      sku     — SKU code from the product sheet
      name    — display name shown beneath the swatch
-     base    — dominant swatch colour (from the SKU sheet)
-     accent  — secondary swatch colour; the darker of base/accent
-               tints the "Add to cart" button (see productColor)
+     base    — dominant swatch colour (descriptive reference only)
+     accent  — secondary swatch colour (descriptive reference only)
      disc    — the circular swatch crop revealed through the porthole
      finale  — marks the card that drops the product mask and turns
                into the "call your account executive" sign-off
 
-   Array order is the swipe order. Colour and near-white swatches
-   alternate so the collection doesn't read "all whites, then all
-   colours". The Confident Exit stays last (the finale). */
+   Array order is the swipe order (Hubert's running order). The
+   Confident Exit stays last — it's the finale sign-off, not a swatch. */
 const SWATCHES = [
-  { sku: "PP-SW-004", name: "Green Light",         base: "#2C4B32", accent: "#15321B", disc: "assets/discs/pp-sw-004-green-light.webp" },
-  { sku: "PP-SW-001", name: "Executive Pinstripe", base: "#EFECE8", accent: "#2E5AB0", disc: "assets/discs/pp-sw-001-executive-pinstripe.webp" },
-  { sku: "PP-SW-007", name: "Emergency Stripe",    base: "#E7E1DF", accent: "#AB0205", disc: "assets/discs/pp-sw-007-emergency-stripe.webp" },
   { sku: "PP-SW-006", name: "Anchor Management",   base: "#192C4F", accent: "#030B22", disc: "assets/discs/pp-sw-006-anchor-management.webp" },
   { sku: "PP-SW-002", name: "Quarterly Optimism",  base: "#F7CA23", accent: "#55348B", disc: "assets/discs/pp-sw-002-quarterly-optimism.webp" },
+  { sku: "PP-SW-007", name: "Emergency Stripe",    base: "#E7E1DF", accent: "#AB0205", disc: "assets/discs/pp-sw-007-emergency-stripe.webp" },
+  { sku: "PP-SW-008", name: "Compliance Gray",     base: "#9B989A", accent: "#656265", disc: "assets/discs/pp-sw-008-compliance-grey.webp" },
+  { sku: "PP-SW-012", name: "Expense Report Pink", base: "#F294AD", accent: "#D15072", disc: "assets/discs/pp-sw-012-expense-report-pink.webp" },
   { sku: "PP-SW-005", name: "Boardroom Dots",      base: "#E7E3DF", accent: "#1C1D1F", disc: "assets/discs/pp-sw-005-boardroom-dots.webp" },
   { sku: "PP-SW-009", name: "Crypto Exposure",     base: "#EE5B09", accent: "#AB1A00", disc: "assets/discs/pp-sw-009-crypto-exposure.webp" },
   { sku: "PP-SW-003", name: "Bull Market",         base: "#1D4934", accent: "#092E1C", disc: "assets/discs/pp-sw-003-bull-market.webp" },
-  { sku: "PP-SW-012", name: "Expense Report Pink", base: "#F294AD", accent: "#D15072", disc: "assets/discs/pp-sw-012-expense-report-pink.webp" },
-  { sku: "PP-SW-008", name: "Compliance Grey",     base: "#9B989A", accent: "#656265", disc: "assets/discs/pp-sw-008-compliance-grey.webp" },
-  { sku: "PP-SW-010", name: "Distress Signal",     base: "#F5E8D4", accent: "#AB2724", disc: "assets/discs/pp-sw-010-distress-signal.webp" },
   { sku: "PP-SW-011", name: "System Failure",      base: "#0E0D0E", accent: "#605C5D", disc: "assets/discs/pp-sw-011-system-failure.webp" },
+  { sku: "PP-SW-010", name: "Distress Signal",     base: "#F5E8D4", accent: "#AB2724", disc: "assets/discs/pp-sw-010-distress-signal.webp" },
+  { sku: "PP-SW-001", name: "Executive Pinstripe", base: "#EFECE8", accent: "#2E5AB0", disc: "assets/discs/pp-sw-001-executive-pinstripe.webp" },
   { sku: "PP-SW-013", name: "The Confident Exit",  base: "#E6E0D3", accent: "#121212", disc: "assets/discs/pp-sw-013-the-confident-exit.webp", finale: true }
 ];
-
-/* ------------------------------------------------------------
-   Colour helpers — derive a per-swatch "product colour"
-   (the darker of base/accent, so it's always strong + legible)
-   ------------------------------------------------------------ */
-function _lum(hex) {
-  const n = hex.replace("#", "");
-  const r = parseInt(n.slice(0, 2), 16) / 255;
-  const g = parseInt(n.slice(2, 4), 16) / 255;
-  const b = parseInt(n.slice(4, 6), 16) / 255;
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-}
-function productColor(s) {
-  return _lum(s.base) <= _lum(s.accent) ? s.base : s.accent;
-}
 
 /* ------------------------------------------------------------
    Screen manager
@@ -87,8 +69,8 @@ function initCover() {
   cover.addEventListener("pointerleave", end);
 }
 
-/* The porthole opens: a circular hole grows out of the cover from the
-   swatch position, revealing the collection beneath through it. */
+/* Cover → browser: the cover slides away like lifting the top card off
+   the swatch stack, revealing the collection beneath it. */
 function revealBrowser() {
   const cover = document.getElementById("screen-cover");
   const br = document.getElementById("screen-browser");
@@ -97,34 +79,23 @@ function revealBrowser() {
     return;
   }
 
-  // browser sits fully rendered beneath the cover (no clipping of the disc)
+  // browser sits beneath at full opacity (no fade), so the cover wipes
+  // cleanly across to reveal it
   br.classList.add("is-active");
-  br.style.opacity = "1";
   br.style.transition = "none";
+  br.style.opacity = "1";
 
-  const cx = "51.5%", cy = "31.5%", DUR = 900;
-  const setHole = (r) => {
-    const g = `radial-gradient(circle at ${cx} ${cy}, transparent ${r}%, #000 ${r + 0.6}%)`;
-    cover.style.maskImage = g;
-    cover.style.webkitMaskImage = g;
-  };
-  setHole(0);
-  const t0 = performance.now();
-  const step = (now) => {
-    const p = Math.min(1, (now - t0) / DUR);
-    const e = 1 - Math.pow(1 - p, 3);        // easeOutCubic
-    setHole(e * 145);
-    cover.style.opacity = String(1 - e * 0.35);
-    if (p < 1) {
-      requestAnimationFrame(step);
-    } else {
-      cover.classList.remove("is-active");
-      cover.style.maskImage = cover.style.webkitMaskImage = "";
-      cover.style.opacity = "";
-      br.style.opacity = br.style.transition = "";
-    }
-  };
-  requestAnimationFrame(step);
+  // slide the cover off (CSS handles the easing + lifted-edge shadow)
+  cover.classList.add("is-sliding");
+
+  window.setTimeout(() => {
+    // hide instantly so it can't snap back to centre while fading
+    cover.style.transition = "none";
+    cover.classList.remove("is-active", "is-sliding");
+    br.style.transition = "";
+    br.style.opacity = "";
+    requestAnimationFrame(() => { cover.style.transition = ""; });
+  }, 560);
 }
 
 /* ------------------------------------------------------------
@@ -212,15 +183,13 @@ const browser = {
       this.el.area.classList.toggle("is-finale", !!s.finale);
       // hide the keep-swiping hint once there's nothing left to swipe to
       this.el.hint.classList.toggle("is-hidden", n >= SWATCHES.length - 1);
-      // accent tint — the UI shifts with the product
-      this.el.add.style.background = productColor(s);
     };
     if (immediate) {
       swap();
     } else {
-      // name fades out/in in lock-step with the disc cross-fade
-      this.el.area.style.opacity = "0";
-      window.setTimeout(() => { swap(); this.el.area.style.opacity = "1"; }, 150);
+      // only the swatch name fades; the button stays anchored
+      this.el.name.style.opacity = "0";
+      window.setTimeout(() => { swap(); this.el.name.style.opacity = "1"; }, 150);
     }
 
     this.el.prev.disabled = n === 0;
@@ -256,10 +225,146 @@ const browser = {
     stage.addEventListener("pointerleave", end);
 
     window.addEventListener("keydown", (e) => {
+      if (instructions.isOpen) return;            // instructions overlay owns the keys when up
       if (!this.el.screen.classList.contains("is-active")) return;
       if (e.key === "ArrowRight") this.go(this.i + 1);
       if (e.key === "ArrowLeft") this.go(this.i - 1);
     });
+  },
+};
+
+/* ------------------------------------------------------------
+   Instructions — the how-to reel (Treatment B)
+   Reuses the porthole/swipe mechanic: each step is a circular
+   disc revealed through the same leather frame.
+   ------------------------------------------------------------ */
+const INSTRUCTIONS = [
+  { title: "Act quickly",         body: "Ask for PIT-PATCH PACK immediately after noticing perspiration in the underarm area.", disc: "assets/instructions/step-1.webp" },
+  { title: "Select style",        body: "Match PIT-PATCH design with shirt.",                                                    disc: "assets/instructions/step-2.webp" },
+  { title: "Measure sweat",       body: "Measure contaminated area. Trim PIT-PATCH accordingly.",                                disc: "assets/instructions/step-3.webp" },
+  { title: "Sew outside shirt",   body: "PIT-PATCH is made from cheap synthetic fabric, and may cause irritation to the skin.",  disc: "assets/instructions/step-4.webp" },
+  { title: "Enjoy the confidence", body: "Even though your company is about to breakdown due to running an expired Windows OS, you sure won’t show it.", disc: "assets/instructions/step-5.webp" },
+];
+
+const instructions = {
+  i: 0,
+  isOpen: false,
+  discs: [],
+  el: {},
+
+  build() {
+    this.el = {
+      overlay:  document.getElementById("instr"),
+      porthole: document.getElementById("instr-porthole"),
+      title:    document.getElementById("instr-title"),
+      body:     document.getElementById("instr-body"),
+      info:     document.getElementById("instr-info"),
+      cta:      document.getElementById("instr-cta"),
+      prev:     document.getElementById("instr-prev"),
+      next:     document.getElementById("instr-next"),
+      dots:     document.getElementById("instr-dots"),
+      hint:     document.getElementById("instr-hint"),
+      open:     document.getElementById("instr-open"),
+      close:    document.getElementById("instr-close"),
+    };
+
+    // disc + dot per step
+    INSTRUCTIONS.forEach((s, idx) => {
+      const img = document.createElement("img");
+      img.className = "disc";
+      img.src = s.disc;
+      img.alt = s.title;
+      img.decoding = "async";
+      img.draggable = false;
+      if (idx === 0) img.classList.add("is-on");
+      this.el.porthole.appendChild(img);
+      this.discs.push(img);
+
+      const dot = document.createElement("span");
+      if (idx === 0) dot.classList.add("is-on");
+      this.el.dots.appendChild(dot);
+    });
+
+    this.el.open.addEventListener("click", () => this.openOverlay());
+    this.el.close.addEventListener("click", () => this.closeOverlay());
+    this.el.cta.addEventListener("click", () => this.closeOverlay());
+    this.el.prev.addEventListener("click", () => this.go(this.i - 1));
+    this.el.next.addEventListener("click", () => this.go(this.i + 1));
+    this.bindSwipe();
+
+    window.addEventListener("keydown", (e) => {
+      if (!this.isOpen) return;
+      if (e.key === "Escape") this.closeOverlay();
+      if (e.key === "ArrowRight") this.go(this.i + 1);
+      if (e.key === "ArrowLeft") this.go(this.i - 1);
+    });
+
+    this.render(0, true);
+  },
+
+  openOverlay() {
+    this.isOpen = true;
+    this.render(0, true);          // always start at step 1
+    this.el.overlay.classList.add("is-open");
+    this.el.overlay.setAttribute("aria-hidden", "false");
+  },
+  closeOverlay() {
+    this.isOpen = false;
+    this.el.overlay.classList.remove("is-open");
+    this.el.overlay.setAttribute("aria-hidden", "true");
+  },
+
+  go(n) {
+    n = Math.max(0, Math.min(INSTRUCTIONS.length - 1, n));
+    if (n === this.i) return;
+    this.render(n, false);
+  },
+
+  render(n, immediate) {
+    this.i = n;
+    const s = INSTRUCTIONS[n];
+
+    this.discs.forEach((d, idx) => d.classList.toggle("is-on", idx === n));
+    Array.from(this.el.dots.children).forEach((d, idx) => d.classList.toggle("is-on", idx === n));
+
+    const swap = () => {
+      this.el.title.textContent = s.title;
+      this.el.body.textContent = s.body;
+      this.el.info.classList.toggle("is-last", n === INSTRUCTIONS.length - 1);
+      this.el.hint.classList.toggle("is-hidden", n >= INSTRUCTIONS.length - 1);
+    };
+    if (immediate) {
+      swap();
+      this.el.info.style.opacity = "1";
+    } else {
+      this.el.info.style.opacity = "0";
+      window.setTimeout(() => { swap(); this.el.info.style.opacity = "1"; }, 150);
+    }
+
+    this.el.prev.disabled = n === 0;
+    this.el.next.disabled = n === INSTRUCTIONS.length - 1;
+  },
+
+  bindSwipe() {
+    const stage = this.el.overlay;
+    const TH = 40;
+    let x0 = null, y0 = null, locked = false;
+    stage.addEventListener("pointerdown", (e) => { x0 = e.clientX; y0 = e.clientY; locked = false; });
+    stage.addEventListener("pointermove", (e) => {
+      if (x0 === null || locked) return;
+      const dx = e.clientX - x0, dy = e.clientY - y0;
+      if (Math.abs(dx) > TH && Math.abs(dx) > Math.abs(dy)) {
+        locked = true;
+        this.go(this.i + (dx < 0 ? 1 : -1));
+      } else if (dy < -TH && Math.abs(dy) > Math.abs(dx)) {
+        locked = true;
+        this.closeOverlay();
+      }
+    });
+    const end = () => { x0 = y0 = null; };
+    stage.addEventListener("pointerup", end);
+    stage.addEventListener("pointercancel", end);
+    stage.addEventListener("pointerleave", end);
   },
 };
 
@@ -374,4 +479,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initTouchCursor();
   cart.build();
   browser.build();
+  instructions.build();
 });

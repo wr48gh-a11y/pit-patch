@@ -7,6 +7,9 @@
   --ink: #1f1d1a;
   --paper: #efece3;
   --paper-deep: #e6e1d4;
+  --coffee: #2e1c15;        /* deep leather, for solid screen backgrounds */
+  --brass: #c69a4d;         /* antique brass — the one premium accent on leather */
+  --brass-deep: #b08838;
   --font: "Archivo", system-ui, -apple-system, sans-serif;
   --font-narrow: "Archivo Narrow", var(--font);
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -81,7 +84,7 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
    LOADER
    ============================================================ */
 .screen--loader {
-  background: var(--paper);
+  background: var(--coffee);
 }
 .loader {
   display: flex;
@@ -107,7 +110,7 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
 }
 .stitch-ring circle {
   fill: none;
-  stroke: var(--ink);
+  stroke: var(--paper);
   stroke-width: 5;
   stroke-linecap: round;
   /* dash = stitch, gap = thread between stitches */
@@ -120,7 +123,7 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   position: relative;
   width: 86px;
   height: 86px;
-  fill: var(--ink);
+  fill: var(--paper);
   animation: needle-breathe 2.1s var(--ease) infinite;
   transform-origin: center;
 }
@@ -133,7 +136,7 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   font-size: 13px;
   /* optical centering for the tracked caps */
   padding-left: 0.42em;
-  color: var(--ink);
+  color: var(--paper);
   opacity: 0.85;
   animation: wordmark-pulse 2.1s var(--ease) infinite;
 }
@@ -157,7 +160,15 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
    COVER
    ============================================================ */
 .screen--cover {
-  background: var(--paper);
+  background: var(--coffee) url("assets/cover-bg.webp") center / cover no-repeat;
+}
+/* cover → browser: the cover slides away to reveal the collection,
+   like lifting the top card off the swatch stack */
+.screen--cover.is-sliding {
+  z-index: 10;                /* slide on TOP of the collection beneath */
+  transform: translateX(-100%);
+  transition: transform 0.52s var(--ease);
+  box-shadow: 24px 0 60px rgba(26, 24, 21, 0.26);
 }
 .cover {
   display: flex;
@@ -171,7 +182,9 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   width: 44px;
   height: 44px;
   margin-bottom: 30px;
-  opacity: 0.9;
+  opacity: 0.92;
+  /* needle.svg is dark ink — flip to cream so it reads on leather */
+  filter: brightness(0) invert(1);
 }
 .cover__eyebrow {
   font-family: var(--font-narrow);
@@ -182,7 +195,8 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   font-size: 13px;
   line-height: 1.7;
   max-width: 250px;
-  color: #8a8478;
+  color: rgba(239, 236, 227, 0.82);
+  text-shadow: 0 1px 10px rgba(20, 12, 8, 0.55);
   margin-bottom: 40px;
 }
 
@@ -192,22 +206,7 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
    ============================================================ */
 .screen--browser {
   display: block;            /* override the flex centering of .screen */
-  background: #c7b59a;       /* burlap-ish, shows in any letterbox gap */
-}
-/* soft scrim over the lower half so name/code/CTA read cleanly on burlap */
-.screen--browser::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 48%;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(to bottom,
-    rgba(236, 232, 222, 0) 0%,
-    rgba(236, 232, 222, 0.28) 40%,
-    rgba(236, 232, 222, 0.88) 65%,
-    rgba(236, 232, 222, 0.97) 85%,
-    rgba(236, 232, 222, 1) 100%);
+  background: var(--coffee); /* leather-deep, shows in any letterbox gap */
 }
 
 /* constant material */
@@ -260,17 +259,17 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
 }
 .topbar__brand {
   font-family: var(--font-narrow);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  padding: 9px 13px 9px calc(13px + 0.2em);
-  font-size: 13px;
-  color: var(--ink);
-  background: rgba(243, 240, 232, 0.86);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border: 1px solid rgba(31, 29, 26, 0.12);
-  border-radius: 2px;
+  letter-spacing: 0.14em;
+  padding: 0 0 0 0.2em;
+  font-size: 12px;
+  color: rgba(239, 236, 227, 0.88);
+  text-shadow: 0 1px 8px rgba(20, 12, 8, 0.45);
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 .cart-btn {
   font-family: var(--font-narrow);
@@ -278,13 +277,11 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   text-transform: uppercase;
   letter-spacing: 0.14em;
   font-size: 12px;
-  color: var(--ink);
-  background: rgba(243, 240, 232, 0.86);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border: 1px solid rgba(31, 29, 26, 0.16);
-  border-radius: 2px;
-  padding: 9px 13px;
+  color: rgba(239, 236, 227, 0.88);
+  text-shadow: 0 1px 8px rgba(20, 12, 8, 0.45);
+  background: none;
+  border: none;
+  padding: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -314,19 +311,17 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   height: 44px;
   display: grid;
   place-items: center;
-  font-size: 26px;
+  font-size: 32px;
   line-height: 1;
-  padding-bottom: 4px;            /* optical centring of the chevron glyph */
-  /* top is set to the hole centre below */
-  color: var(--ink);
-  background: rgba(243, 240, 232, 0.62);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  border: 1px solid rgba(31, 29, 26, 0.14);
-  border-radius: 50%;
+  padding-bottom: 4px;
+  color: rgba(239, 236, 227, 0.65);
+  text-shadow: 0 1px 8px rgba(20, 12, 8, 0.5);
+  background: none;
+  border: none;
   cursor: pointer;
   transition: opacity 0.25s var(--ease), transform 0.15s var(--ease);
   -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 .nav:active { transform: translateY(-50%) scale(0.92); }
 .nav--prev { left: 12px; }
@@ -337,10 +332,9 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
 .info-area {
   position: absolute;
   left: 0; right: 0;
-  bottom: 25%;             /* anchor the CTA a constant height above the footer */
+  bottom: 25%;
   z-index: 3;
   padding: 0 24px;
-  transition: opacity 0.15s var(--ease);
 }
 .info {
   display: flex;
@@ -362,25 +356,29 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   font-size: clamp(28px, 8.5vw, 40px);
   letter-spacing: -0.025em;
   line-height: 1;
+  color: var(--paper);
+  text-shadow: 0 2px 16px rgba(18, 10, 6, 0.62), 0 1px 3px rgba(18, 10, 6, 0.5);
+  transition: opacity 0.15s var(--ease);
 }
 .add-btn {
   margin-top: 26px;
   font-family: var(--font);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--paper);
-  background: var(--ink);
+  color: var(--ink);
+  background: var(--brass);
   border: none;
   border-radius: 2px;
   padding: 15px 30px;
   cursor: pointer;
-  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+  box-shadow: 0 6px 20px rgba(18, 10, 6, 0.35);
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 .add-btn:active { transform: scale(0.97); }
-.add-btn.is-added { filter: brightness(0.8); }
+.add-btn.is-added { background: var(--brass-deep); }
 
 /* finale: Microsoft sign-off, then message + decorative CTA */
 .finale__copy {
@@ -388,40 +386,30 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
   font-size: 15px;
   line-height: 1.42;
   letter-spacing: 0;
-  max-width: 23ch;
-  color: var(--ink);
-  text-wrap: balance;     /* even lines, no widow */
+  max-width: 100%;
+  color: var(--paper);
+  text-shadow: 0 1px 10px rgba(20, 12, 8, 0.55);
+  text-wrap: balance;
 }
 .finale__cta {
   margin-top: 22px;
   font-family: var(--font);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--paper);
-  background: var(--ink);
+  color: var(--ink);
+  background: var(--brass);
   border: none;
   border-radius: 2px;
   padding: 15px 34px;
   cursor: pointer;
+  box-shadow: 0 6px 20px rgba(18, 10, 6, 0.35);
   -webkit-tap-highlight-color: transparent;
 }
 
-/* counter */
-.counter {
-  position: absolute;
-  bottom: calc(42px + env(safe-area-inset-bottom));
-  left: 0; right: 0;
-  z-index: 3;
-  text-align: center;
-  font-family: var(--font-narrow);
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  padding-left: 0.2em;
-  font-size: 12px;
-  color: #5b554a;
-}
+/* counter — hidden; position reserved in case it's re-enabled */
+.counter { display: none; }
 
 /* ============================================================
    CART DRAWER
@@ -641,26 +629,14 @@ body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-top: 6px;
+  gap: 10px;
+  margin-top: 4px;
 }
-.swipe-cue__track {
-  position: relative;
-  width: 96px;
-  height: 40px;
-  border-radius: 20px;
-  border: 1.5px solid rgba(31, 29, 26, 0.22);
-}
-.swipe-cue__dot {
-  position: absolute;
-  top: 50%;
-  left: 6px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--ink);
-  transform: translateY(-50%);
-  animation: cue-slide 1.9s var(--ease) infinite;
+.swipe-cue__gif {
+  width: 86px;
+  height: 86px;
+  opacity: 0.95;
+  pointer-events: none;
 }
 .swipe-cue__label {
   font-family: var(--font-narrow);
@@ -669,11 +645,8 @@ body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; 
   letter-spacing: 0.22em;
   padding-left: 0.22em;
   font-size: 12px;
-  color: #8a8478;
-}
-@keyframes cue-slide {
-  0%, 100% { left: 6px; }
-  50%      { left: calc(100% - 34px); }
+  color: rgba(239, 236, 227, 0.82);
+  text-shadow: 0 1px 10px rgba(20, 12, 8, 0.55);
 }
 
 /* ============================================================
@@ -681,8 +654,11 @@ body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; 
    ============================================================ */
 .swipe-hint {
   position: absolute;
-  bottom: calc(78px + env(safe-area-inset-bottom));
+  bottom: calc(44px + env(safe-area-inset-bottom));
   left: 0; right: 0;
+  width: max-content;
+  max-width: calc(100% - 48px);
+  margin-inline: auto;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -699,11 +675,12 @@ body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; 
   letter-spacing: 0.2em;
   padding-left: 0.2em;
   font-size: 11px;
-  color: #6a6458;
+  color: rgba(239, 236, 227, 0.82);
+  text-shadow: 0 1px 6px rgba(20, 12, 8, 0.5);
 }
 .swipe-hint__chevs {
   font-size: 13px;
-  color: #6a6458;
+  color: rgba(239, 236, 227, 0.82);
   letter-spacing: 1px;
   animation: chev-nudge 1.5s var(--ease) infinite;
 }
@@ -715,15 +692,114 @@ body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; 
 /* ============================================================
    FINALE — Microsoft sign-off
    ============================================================ */
+
 .finale__logo {
   width: 74px;
   height: auto;
   margin-top: 22px;
   opacity: 0.9;
+  filter: brightness(0) invert(1);
 }
+
+
+/* ============================================================
+   INSTRUCTIONS — how-to reel (Treatment B: reuses the porthole)
+   ============================================================ */
+.instr {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: block;
+  background: var(--coffee);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0s linear 0.4s;
+}
+.instr.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s var(--ease);
+}
+.instr__close {
+  font-family: var(--font);
+  font-size: 26px;
+  line-height: 1;
+  color: rgba(239, 236, 227, 0.88);
+  text-shadow: 0 1px 8px rgba(20, 12, 8, 0.45);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 2px;
+  -webkit-tap-highlight-color: transparent;
+}
+.instr__info {
+  position: absolute;
+  left: 0; right: 0;
+  top: 60%;
+  z-index: 3;
+  padding: 0 30px;
+  text-align: center;
+  transition: opacity 0.15s var(--ease);
+}
+.instr__title {
+  font-weight: 800;
+  font-size: clamp(21px, 6.5vw, 30px);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.05;
+  color: var(--paper);
+  text-shadow: 0 2px 16px rgba(18, 10, 6, 0.62), 0 1px 3px rgba(18, 10, 6, 0.5);
+}
+.instr__body {
+  margin: 12px auto 0;
+  max-width: 30ch;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.42;
+  color: rgba(239, 236, 227, 0.86);
+  text-shadow: 0 1px 10px rgba(20, 12, 8, 0.55);
+  text-wrap: balance;
+}
+.instr__cta {
+  display: none;
+  margin-top: 20px;
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--brass);
+  border: none;
+  border-radius: 2px;
+  padding: 14px 30px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(18, 10, 6, 0.35);
+  -webkit-tap-highlight-color: transparent;
+}
+.instr__info.is-last .instr__cta { display: inline-block; }
+.instr__dots {
+  position: absolute;
+  bottom: calc(44px + env(safe-area-inset-bottom));
+  left: 0; right: 0;
+  z-index: 3;
+  display: flex;
+  gap: 7px;
+  justify-content: center;
+}
+.instr__dots span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(239, 236, 227, 0.38);
+  transition: background 0.25s var(--ease);
+}
+.instr__dots span.is-on { background: var(--brass); }
+
+/* keep-swiping hint clears the progress dots in the instructions reel */
+#instr-hint { bottom: calc(74px + env(safe-area-inset-bottom)); }
 
 @media (prefers-reduced-motion: reduce) {
   .stitch-ring, .stitch-ring circle, .loader__needle, .loader__wordmark { animation: none; }
   .cart-overlay, .cart-panel { transition: none; }
-  .swipe-cue__dot, .swipe-hint__chevs { animation: none; }
+  .swipe-hint__chevs { animation: none; }
 }
