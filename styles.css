@@ -337,7 +337,7 @@ img, svg { display: block; max-width: 100%; -webkit-user-drag: none; user-select
 .info-area {
   position: absolute;
   left: 0; right: 0;
-  bottom: 21%;             /* anchor the CTA a constant height above the footer */
+  bottom: 25%;             /* anchor the CTA a constant height above the footer */
   z-index: 3;
   padding: 0 24px;
   transition: opacity 0.15s var(--ease);
@@ -718,7 +718,7 @@ body.cursor-sim a, body.cursor-sim button, body.cursor-sim .nav { cursor: none; 
 .finale__logo {
   width: 74px;
   height: auto;
-  margin-bottom: 22px;     /* first element: sits just under the swatch */
+  margin-top: 22px;
   opacity: 0.9;
 }
 
