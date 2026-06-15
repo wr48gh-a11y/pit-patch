@@ -17,17 +17,19 @@
    alternate so the collection doesn't read "all whites, then all
    colours". The Confident Exit stays last (the finale). */
 const SWATCHES = [
-  { sku: "PP-SW-005", name: "Expense Report Green Light", base: "#2F5F2E", accent: "#2F5F2E", disc: "assets/discs/05-green-light.png" },
-  { sku: "PP-SW-001", name: "Boardroom Dots",      base: "#F4F2EA", accent: "#11131A", disc: "assets/discs/01-boardroom-dots.png" },
-  { sku: "PP-SW-007", name: "Emergency Stripe",    base: "#B72417", accent: "#F2E8D2", disc: "assets/discs/07-emergency-stripe.png" },
-  { sku: "PP-SW-004", name: "Anchor Management",   base: "#F5F1E8", accent: "#172642", disc: "assets/discs/04-anchor-management.png" },
-  { sku: "PP-SW-006", name: "Quarterly Optimism",  base: "#D9BE3A", accent: "#4D246D", disc: "assets/discs/06-quarterly-optimism.png" },
-  { sku: "PP-SW-003", name: "Market Bulls",        base: "#F3EFE5", accent: "#1E2633", disc: "assets/discs/03-market-bulls.png" },
-  { sku: "PP-SW-010", name: "Golden Parachutes",   base: "#A75618", accent: "#E2A55C", disc: "assets/discs/10-golden-parachutes.png" },
-  { sku: "PP-SW-002", name: "Executive Pinstripe", base: "#F6F3EC", accent: "#172B5C", disc: "assets/discs/02-executive-pinstripe.png" },
-  { sku: "PP-SW-009", name: "Pink Slip Stripe",    base: "#EFA7A4", accent: "#587B50", disc: "assets/discs/09-pink-slip-stripe.png" },
-  { sku: "PP-SW-011", name: "Falling Assets",      base: "#7A4A23", accent: "#C99A2E", disc: "assets/discs/11-falling-assets.png" },
-  { sku: "PP-SW-008", name: "The Confident Exit",  base: "#E6E0D3", accent: "#121212", disc: "assets/discs/08-the-confident-exit.png", finale: true }
+  { sku: "PP-SW-004", name: "Green Light",         base: "#2C4B32", accent: "#15321B", disc: "assets/discs/pp-sw-004-green-light.webp" },
+  { sku: "PP-SW-001", name: "Executive Pinstripe", base: "#EFECE8", accent: "#2E5AB0", disc: "assets/discs/pp-sw-001-executive-pinstripe.webp" },
+  { sku: "PP-SW-007", name: "Emergency Stripe",    base: "#E7E1DF", accent: "#AB0205", disc: "assets/discs/pp-sw-007-emergency-stripe.webp" },
+  { sku: "PP-SW-006", name: "Anchor Management",   base: "#192C4F", accent: "#030B22", disc: "assets/discs/pp-sw-006-anchor-management.webp" },
+  { sku: "PP-SW-002", name: "Quarterly Optimism",  base: "#F7CA23", accent: "#55348B", disc: "assets/discs/pp-sw-002-quarterly-optimism.webp" },
+  { sku: "PP-SW-005", name: "Boardroom Dots",      base: "#E7E3DF", accent: "#1C1D1F", disc: "assets/discs/pp-sw-005-boardroom-dots.webp" },
+  { sku: "PP-SW-009", name: "Crypto Exposure",     base: "#EE5B09", accent: "#AB1A00", disc: "assets/discs/pp-sw-009-crypto-exposure.webp" },
+  { sku: "PP-SW-003", name: "Bull Market",         base: "#1D4934", accent: "#092E1C", disc: "assets/discs/pp-sw-003-bull-market.webp" },
+  { sku: "PP-SW-012", name: "Expense Report Pink", base: "#F294AD", accent: "#D15072", disc: "assets/discs/pp-sw-012-expense-report-pink.webp" },
+  { sku: "PP-SW-008", name: "Compliance Grey",     base: "#9B989A", accent: "#656265", disc: "assets/discs/pp-sw-008-compliance-grey.webp" },
+  { sku: "PP-SW-010", name: "Distress Signal",     base: "#F5E8D4", accent: "#AB2724", disc: "assets/discs/pp-sw-010-distress-signal.webp" },
+  { sku: "PP-SW-011", name: "System Failure",      base: "#0E0D0E", accent: "#605C5D", disc: "assets/discs/pp-sw-011-system-failure.webp" },
+  { sku: "PP-SW-013", name: "The Confident Exit",  base: "#E6E0D3", accent: "#121212", disc: "assets/discs/pp-sw-013-the-confident-exit.webp", finale: true }
 ];
 
 /* ------------------------------------------------------------

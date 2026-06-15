@@ -42,7 +42,7 @@ Everything you see in the browser screen is built from three stacked layers:
 1. **Disc stack** (`z-index: 1`) — every swatch is a circular crop sitting
    behind the frame. Only one is at full opacity at a time; swiping
    cross-fades between them.
-2. **Burlap frame** (`z-index: 2`) — one fixed image (`assets/frame.png`) with a
+2. **Burlap frame** (`z-index: 2`) — one fixed image (`assets/frame.webp`) with a
    transparent porthole punched out of it. The "material" never moves; only the
    disc behind the hole changes. A soft scrim over the lower half keeps the
    text legible against the texture.
@@ -61,8 +61,9 @@ styles.css        All styling. Mobile-first; desktop renders as a phone
                   frame on a gradient (it does not stretch responsively)
 app.js            Screen manager, swipe/fade mechanic, cart, touch cursor
 assets/
-  frame.png       The burlap "material" with the transparent porthole
-  discs/          The 11 circular swatch crops revealed through the hole
+  frame.webp      The burlap "material" with the transparent porthole
+  discs/          13 square crops revealed through the hole
+                  (12 fabric swatches + the finale illustration)
   needle.svg      Needle-and-thread mark (loader + cover)
   ms-logo.svg     Microsoft logo (finale)
 ```
