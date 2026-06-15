@@ -18,7 +18,7 @@ const SWATCHES = [
   { sku: "PP-SW-006", name: "Anchor Management",   base: "#192C4F", accent: "#030B22", disc: "assets/discs/pp-sw-006-anchor-management.webp" },
   { sku: "PP-SW-002", name: "Quarterly Optimism",  base: "#F7CA23", accent: "#55348B", disc: "assets/discs/pp-sw-002-quarterly-optimism.webp" },
   { sku: "PP-SW-007", name: "Emergency Stripe",    base: "#E7E1DF", accent: "#AB0205", disc: "assets/discs/pp-sw-007-emergency-stripe.webp" },
-  { sku: "PP-SW-008", name: "Compliance Gray",     base: "#9B989A", accent: "#656265", disc: "assets/discs/pp-sw-008-compliance-grey.webp" },
+  { sku: "PP-SW-008", name: "Compliance Gray",     base: "#9B989A", accent: "#656265", disc: "assets/discs/pp-sw-008-compliance-gray.webp" },
   { sku: "PP-SW-012", name: "Expense Report Pink", base: "#F294AD", accent: "#D15072", disc: "assets/discs/pp-sw-012-expense-report-pink.webp" },
   { sku: "PP-SW-005", name: "Boardroom Dots",      base: "#E7E3DF", accent: "#1C1D1F", disc: "assets/discs/pp-sw-005-boardroom-dots.webp" },
   { sku: "PP-SW-009", name: "Crypto Exposure",     base: "#EE5B09", accent: "#AB1A00", disc: "assets/discs/pp-sw-009-crypto-exposure.webp" },

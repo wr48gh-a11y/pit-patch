@@ -34,6 +34,7 @@ network connection gives the intended typography.
 | **Cover** | The collection title and a *swipe-to-begin* cue. |
 | **Browser** | Swipe through the swatches. Each one names the colour and adds to a cart. |
 | **Finale** | The last swatch drops the product mask and becomes the Microsoft sign-off. |
+| **Instructions** | Tapping "Instructions" opens a 5-step how-to reel using the same porthole mechanic. Swipe left/right to step through; swipe up or tap × to dismiss. |
 
 ## How the swatch mechanic works
 
@@ -56,16 +57,21 @@ the porthole's position, revealing the collection beneath — a single
 ## Project structure
 
 ```
-index.html        Markup for all four screens + the cart drawer
-styles.css        All styling. Mobile-first; desktop renders as a phone
-                  frame on a gradient (it does not stretch responsively)
-app.js            Screen manager, swipe/fade mechanic, cart, touch cursor
+index.html          Markup for all screens + instructions overlay + cart drawer
+styles.css          All styling. Mobile-first; desktop renders as a phone
+                    frame on a gradient (it does not stretch responsively)
+app.js              Screen manager, swipe/fade mechanic, instructions module,
+                    cart, touch cursor
 assets/
-  frame.webp      The burlap "material" with the transparent porthole
-  discs/          13 square crops revealed through the hole
-                  (12 fabric swatches + the finale illustration)
-  needle.svg      Needle-and-thread mark (loader + cover)
-  ms-logo.svg     Microsoft logo (finale)
+  frame.webp        The burlap "material" with the transparent porthole
+  cover-bg.webp     Cover screen background texture
+  swipe.webp        Animated swipe-to-begin cue on the cover
+  discs/            13 circular crops revealed through the porthole hole
+                    (12 fabric swatches + the finale illustration)
+  instructions/     5 step-illustration discs for the how-to reel
+                    (step-1.webp … step-5.webp)
+  needle.svg        Needle-and-thread mark (loader + cover)
+  ms-logo.svg       Microsoft logo (finale)
 ```
 
 ## Implementation notes
@@ -80,6 +86,10 @@ assets/
   desktop.
 - **Reduced motion** — `prefers-reduced-motion` disables the loader animation,
   cart transitions, and the porthole-opening reveal.
+- **Instructions overlay** — reuses the porthole/swipe mechanic rather than a
+  separate help pattern. Swipe left/right steps through 5 illustrated steps;
+  swipe up (or tap ×) dismisses. The overlay intercepts arrow-key and Escape
+  events while open so they don't bleed through to the swatch browser.
 
 ## Status
 
